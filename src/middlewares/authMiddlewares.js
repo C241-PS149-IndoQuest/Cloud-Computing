@@ -1,4 +1,3 @@
-// middlewares/authMiddleware.js
 const jwt = require("jsonwebtoken");
 
 const verifyToken = async (request, h) => {
@@ -14,7 +13,10 @@ const verifyToken = async (request, h) => {
   try {
     const token = authorization.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    request.user = decoded;
+    console.log("Decoded token:", decoded); // Log the decoded token
+    request.auth = {
+      credentials: decoded,
+    };
   } catch (err) {
     return h.response("Invalid Token").code(401).takeover();
   }
